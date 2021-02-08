@@ -16,20 +16,16 @@ const register = async (req, res) => {
                 error: 'Fill in all fields'
             });
         }
-
         if (!fullName.match(nameRegExp)) {
             errors.push("Full name is invalid. It must be of format `Name Surname`");
         }
-
         if (!email.match(mailRegExp)) {
             errors.push("Enter correct email");
         }
-
         if (!(password.length > 8) || !password.match(passRegExp[0]) ||
             !password.match(passRegExp[1]) || password.includes(" ")) {
             errors.push("Invalid password. Password must contain 2 uppercase letters, 3 numbers, not contain space and be longer than 8 symbols");
         }
-
         if (errors.length > 0) {
             let str = "";
             errors.forEach(el => {
@@ -40,14 +36,12 @@ const register = async (req, res) => {
             });
         }
         const foundUser = await User.findOne({ email: email }).exec();
-
         if (foundUser) {
             return res.status(400).json({
                 message: "This email has already occupied."
             });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-
         const newUser = new User({
             fullName,
             email,
@@ -72,7 +66,6 @@ const login = async (req, res) => {
 
         if (user) {
             const isSamePassword = await bcrypt.compare(password, user.password);
-
             if (isSamePassword) {
                 const token = jwt.sign({
                     id: user._id,
