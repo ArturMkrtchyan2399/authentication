@@ -11,11 +11,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 const db = process.env.MongoURI;
 app.use('/', require('./routes'));
 
-const port = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log('MongoDB is connected');
-        app.listen(port, () => {
+        app.listen(PORT, () => {
             console.log(`Server is running ${port}`);
         });
     })
