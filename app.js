@@ -2,25 +2,21 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+require('dotenv').config();
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
-require('dotenv').config();
 const db = process.env.MongoURI;
+app.use('/', require('./routes'));
 
-app.use('/', require('./routes/index.js'));
-
-app.on('ready', () => {
-    app.listen(8000, () => {
-        console.log("Server is running...");
-    });
-});
-
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+const port = process.env.PORT || 8000;
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log('MongoDB is connected');
-        app.emit('ready');
+        app.listen(port, () => {
+            console.log(`Server is running ${port}`);
+        });
     })
     .catch(err => console.log(err));
