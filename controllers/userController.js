@@ -87,8 +87,10 @@ const login = async (req, res) => {
             message: "User with this email is not found."
         });
     } catch (err) {
-        console.log(err);
-        return res.status(500);
+        console.log( err);
+        return res.status(500).json({
+            message: 'Error'
+        })
     }
 };
 module.exports = {
